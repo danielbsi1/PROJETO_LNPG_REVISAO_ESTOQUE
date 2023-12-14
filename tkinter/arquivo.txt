@@ -1,0 +1,2 @@
+cerveja,2,24.50,Sim
+vodka,2,20.3,Sim
