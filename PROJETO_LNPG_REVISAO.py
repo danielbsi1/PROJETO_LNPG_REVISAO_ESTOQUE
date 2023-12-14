@@ -2,44 +2,75 @@ from tkinter import *
 from tkinter.ttk import Combobox
 filename = 'arquivo.txt'
 
+def limpar(event):
+    entryNomeProduto.delete(0, END)
+    entryPrecoUnitario.delete(0, END)
+    entryQuantEstoque.delete(0, END)
+    
+
 def verificar(event):
-
-    # camposVazios = []
-
-    # if entryNomeProduto.get() == '':
-    #     camposVazios.append('Nome produto')
-    # elif entryPrecoUnitario.get() == '':
-    #     camposVazios.append('Preço unitário')
-    # elif entryQuantEstoque.get() == '':
-    #     camposVazios.append('Quantidade estoque')
+    
     
     if entryNomeProduto.get() == '' or entryPrecoUnitario.get() == '' or entryQuantEstoque.get() == '' or v0.get() != 'Sim' and v0.get() != 'Não':
         windowVoid = Toplevel()
-        windowMain.title('ERRO')
+        windowVoid.title('ERRO')
         
         labelAviso = Label(windowVoid ,text='FALTA CAMPO PARA PREENCHER')
         labelAviso.grid(row=1, column=1, padx=10, pady=10, sticky='nswe',  columnspan=2)
         verificarQtdPositiva()
-
+        verificarPrecoUnitario()
         windowVoid.mainloop()
-        
-def verificarQtdPositiva():
-    if int(entryQuantEstoque.get()) *  0 == 0:
+    else:
+        verificarQtdPositiva()
+        verificarPrecoUnitario()
+    
+    
+    
 
-        if int(entryQuantEstoque.get()) < 0:
+def  verificarPrecoUnitario(event):
+     
+    a = entryPrecoUnitario.get()
+    try:
+        a = float(entryPrecoUnitario.get())
+    
+        if a < 0:
             windowVoid = Toplevel()
-            windowMain.title('ERRO')
-        
+            windowVoid.title('ERRO')
+
+            labelAviso = Label(windowVoid ,text='Preço unitário menor que 0')
+            labelAviso.grid(row=1, column=1, padx=10, pady=10, sticky='nswe',  columnspan=2)
+            windowVoid.mainloop()
+    except:
+        windowVoid = Toplevel()
+        windowVoid.title('ERRO')
+
+        labelAviso = Label(windowVoid ,text='Não é um valor válido')
+        labelAviso.grid(row=1, column=1, padx=10, pady=10, sticky='nswe',  columnspan=2)
+        windowVoid.mainloop()
+
+
+def verificarQtdPositiva(event):
+    a = entryQuantEstoque.get()
+    try:
+        a = int(entryQuantEstoque.get())
+    
+        if a < 0:
+            windowVoid = Toplevel()
+            windowVoid.title('ERRO')
+
             labelAviso = Label(windowVoid ,text='Quantidade de estoque menor que 0')
             labelAviso.grid(row=1, column=1, padx=10, pady=10, sticky='nswe',  columnspan=2)
             windowVoid.mainloop()
-    else:    
-        windowVoid = Toplevel()
-        windowMain.title('ERRO')
+    except:
     
-        labelAviso = Label(windowVoid ,text='n eh numero')
+
+        windowVoid = Toplevel()
+        windowVoid.title('ERRO')
+
+        labelAviso = Label(windowVoid ,text='Não é um valor válido')
         labelAviso.grid(row=1, column=1, padx=10, pady=10, sticky='nswe',  columnspan=2)
         windowVoid.mainloop()
+ 
 
 windowMain = Tk()
 windowMain.title('CONTROLE DE ESTOQUE')
@@ -57,6 +88,7 @@ labelQuantEstoque.grid(row=2, padx=10, pady=10, column=0, sticky='nswe', columns
 entryQuantEstoque = Entry(windowMain)
 entryQuantEstoque.grid(row=2, padx=10, pady=10, column=1, sticky='nswe', columnspan=2)
 
+
 labelPrecoUnitario = Label(text='Preço unitário: ')
 labelPrecoUnitario.grid(row=3, padx=10, pady=10, column=0, sticky='nswe', columnspan=1)
 entryPrecoUnitario = Entry(windowMain)
@@ -70,7 +102,7 @@ btnNomeProduto.bind('<Button-1>', verificar)
 
 btnNomeProduto = Button(text='Limpar')
 btnNomeProduto.grid(row=11, padx=10, pady=10, column=1, sticky='nswe', columnspan=2)
-btnNomeProduto.bind('<Button-1>', )
+btnNomeProduto.bind('<Button-1>', limpar)
 
 
 v0=StringVar()
@@ -82,5 +114,6 @@ r1=Radiobutton(windowMain, text="Sim", variable=v0, value='Sim')
 r2=Radiobutton(windowMain, text="Não", variable=v0, value='Não')
 r1.grid(row=4, padx=10, pady=10, column=2, sticky='nswe', columnspan=1)
 r2.grid(row=4, padx=10, pady=10, column=1, sticky='nswe', columnspan=1)
+
 
 windowMain.mainloop()
